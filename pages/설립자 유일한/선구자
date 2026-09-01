@@ -1,0 +1,72 @@
+<style>
+/* ===== 가로 드래그 이미지 뷰어 ===== */
+
+.drag-scroll-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  user-select: none;
+}
+
+.drag-scroll-wrap:active {
+  cursor: grabbing;
+}
+
+/* 스크롤바 숨김 */
+.drag-scroll-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.drag-scroll-wrap {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.drag-scroll-inner img {
+  display: block;
+  height: 80vh; /* 화면 높이 80% */
+  width: auto;
+  max-width: none;
+  pointer-events: none;
+}
+</style>
+
+<div class="drag-scroll-wrap" id="dragScroll">
+  <div class="drag-scroll-inner">
+    <img src="https://raw.githubusercontent.com/yeon0226/yuhan_svg/main/newilhan/film1.jpg" alt="이미지">
+  </div>
+</div>
+
+<script>
+(function() {
+  const slider = document.getElementById('dragScroll');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  /* 마우스 드래그 */
+  slider.addEventListener('mousedown', function(e) {
+    isDown = true;
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+
+  slider.addEventListener('mouseleave', function() {
+    isDown = false;
+  });
+
+  slider.addEventListener('mouseup', function() {
+    isDown = false;
+  });
+
+  slider.addEventListener('mousemove', function(e) {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    slider.scrollLeft = scrollLeft - walk;
+  });
+})();
+</script>
